@@ -17,17 +17,28 @@ import javafx.scene.layout.HBox;
 import static javafx.scene.control.TableView.TableViewSelectionModel;
 import java.time.LocalDate;
 
+/**
+ * Clase que permite agregar y eliminar filas en un TableView de objetos Person usando JavaFX.
+ */
 public class TableViewAddDeleteRows extends Application {
-    // Fields to add Person details
+    // Campos para añadir detalles de una Persona
     private TextField fNameField;
     private TextField lNameField;
     private DatePicker dobField;
     private TableView<Person> table;
 
+    /**
+     * Método principal que lanza la aplicación JavaFX.
+     */
     public static void main(String[] args) {
         Application.launch(args);
     }
 
+    /**
+     * Método iniciado cuando la aplicación JavaFX empieza.
+     * Inicializa y configura los elementos de la interfaz de usuario y muestra la ventana principal.
+     * @param stage El escenario principal de la aplicación.
+     */
     @Override
     @SuppressWarnings("unchecked")
     public void start(Stage stage) {
@@ -35,16 +46,20 @@ public class TableViewAddDeleteRows extends Application {
         lNameField = new TextField();
         dobField = new DatePicker();
         table = new TableView<>(PersonTableUtil.getPersonList());
-        // Turn on multi-row selection for the TableView
+
+        // Activa la selección múltiple de filas para el TableView
         TableViewSelectionModel<Person> tsm = table.getSelectionModel();
         tsm.setSelectionMode(SelectionMode.MULTIPLE);
-        // Add columns to the TableView
+
+        // Añadir columnas al TableView
         table.getColumns().addAll(PersonTableUtil.getIdColumn(), PersonTableUtil.getFirstNameColumn(), PersonTableUtil.getLastNameColumn(), PersonTableUtil.getBirthDateColumn());
+
         GridPane newDataPane  = this.getNewPersonDataPane();
         Button restoreBtn = new Button("Restore Rows");
         restoreBtn.setOnAction(e -> restoreRows());
         Button deleteBtn = new Button("Delete Selected Rows");
         deleteBtn.setOnAction(e -> deleteSelectedRows());
+
         VBox root = new VBox(newDataPane, new HBox(restoreBtn, deleteBtn), table);
         root.setSpacing(5);
         root.setStyle("-fx-padding: 10;" +
@@ -53,6 +68,7 @@ public class TableViewAddDeleteRows extends Application {
                 "-fx-border-insets: 5;" +
                 "-fx-border-radius: 5;" +
                 "-fx-border-color: blue;");
+
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.setMinWidth(500);
@@ -62,6 +78,10 @@ public class TableViewAddDeleteRows extends Application {
         stage.show();
     }
 
+    /**
+     * Crea un panel de entrada de datos para una nueva persona
+     * @return Un GridPane que contiene los campos de entrada para una persona.
+     */
     public GridPane getNewPersonDataPane() {
         GridPane pane = new GridPane();
         pane.setHgap(10);
@@ -69,41 +89,51 @@ public class TableViewAddDeleteRows extends Application {
         pane.addRow(0, new Label("Nombre:"), fNameField);
         pane.addRow(1, new Label("Apellido:"), lNameField);
         pane.addRow(2, new Label("Fecha Nacimiento:"), dobField);
+
         Button addBtn = new Button("Añadir");
         addBtn.setOnAction(e -> addPerson());
-        // Add the "Add" button
+
+        // Añade el botón "Añadir"
         pane.add(addBtn, 2, 0);
         return pane;
     }
 
+    /**
+     * Elimina las filas seleccionadas en el TableView.
+     */
     public void deleteSelectedRows() {
         TableViewSelectionModel<Person> tsm = table.getSelectionModel();
         if (tsm.isEmpty()) {
             System.out.println("Please select a row to delete.");
             return;
         }
-        // Get all selected row indices in an array
+
+        // Obtiene todos los índices de filas seleccionadas en un array
         ObservableList<Integer> list = tsm.getSelectedIndices();
         Integer[] selectedIndices = new Integer[list.size()];
         selectedIndices = list.toArray(selectedIndices);
-        // Sort the array
+
+        // Ordena el array
         Arrays.sort(selectedIndices);
-        // Delete rows (last to first)
+
+        // Elimina filas (de la última a la primera)
         for(int i = selectedIndices.length - 1; i >= 0; i--) {
             tsm.clearSelection(selectedIndices[i]);
             table.getItems().remove(selectedIndices[i].intValue());
         }
     }
 
+    /**
+     * Restaura las filas del TableView a su estado inicial.
+     */
     public void restoreRows() {
         table.getItems().clear();
         table.getItems().addAll(PersonTableUtil.getPersonList());
     }
 
-    public Person getPerson() {
-        return new Person(fNameField.getText(), lNameField.getText(), dobField.getValue());
-    }
-
+    /**
+     * Añade una nueva persona al TableView.
+     */
     public void addPerson() {
         String firstName = fNameField.getText();
         String lastName = lNameField.getText();
@@ -129,6 +159,9 @@ public class TableViewAddDeleteRows extends Application {
         clearFields();
     }
 
+    /**
+     * Limpia los campos de entrada de datos.
+     */
     public void clearFields() {
         fNameField.setText(null);
         lNameField.setText(null);
