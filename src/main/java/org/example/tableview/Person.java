@@ -87,7 +87,7 @@ public class Person {
     public boolean isValidPerson(Person p, List<String> errorList) {
         boolean isValid = true;
         String fn = p.getFirstName();
-        if (fn == null || fn.trim().length() == 0) {
+        if (fn == null || fn.trim().isEmpty()) {
             errorList.add("First name must contain minimum one character.");
             isValid = false;
         }

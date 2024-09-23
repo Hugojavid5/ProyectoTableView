@@ -11,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import org.example.tableview.Person;
 import java.util.Arrays;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
@@ -56,6 +55,9 @@ public class TableViewAddDeleteRows extends Application {
                 "-fx-border-color: blue;");
         Scene scene = new Scene(root);
         stage.setScene(scene);
+        stage.setMinWidth(500);
+        stage.setMinHeight(350);
+        stage.setResizable(false);
         stage.setTitle("Adding/Deleting Rows in a TableViews");
         stage.show();
     }
@@ -88,7 +90,7 @@ public class TableViewAddDeleteRows extends Application {
         Arrays.sort(selectedIndices);
         // Delete rows (last to first)
         for(int i = selectedIndices.length - 1; i >= 0; i--) {
-            tsm.clearSelection(selectedIndices[i].intValue());
+            tsm.clearSelection(selectedIndices[i]);
             table.getItems().remove(selectedIndices[i].intValue());
         }
     }
