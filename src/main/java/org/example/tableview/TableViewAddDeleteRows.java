@@ -16,6 +16,7 @@ import java.util.Arrays;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.HBox;
 import static javafx.scene.control.TableView.TableViewSelectionModel;
+import java.time.LocalDate;
 
 public class TableViewAddDeleteRows extends Application {
     // Fields to add Person details
@@ -102,7 +103,26 @@ public class TableViewAddDeleteRows extends Application {
     }
 
     public void addPerson() {
-        Person p = getPerson();
+        String firstName = fNameField.getText();
+        String lastName = lNameField.getText();
+        LocalDate dob = dobField.getValue();
+
+        if (firstName == null || firstName.trim().isEmpty()) {
+            System.out.println("El nombre no puede estar vacío.");
+            return;
+        }
+
+        if (lastName == null || lastName.trim().isEmpty()) {
+            System.out.println("El apellido no puede estar vacío.");
+            return;
+        }
+
+        if (dob == null) {
+            System.out.println("La fecha de nacimiento no puede estar vacía.");
+            return;
+        }
+
+        Person p = new Person(firstName, lastName, dob);
         table.getItems().add(p);
         clearFields();
     }
