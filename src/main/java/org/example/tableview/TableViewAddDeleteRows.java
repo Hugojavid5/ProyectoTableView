@@ -8,6 +8,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Tooltip;  // Importa Tooltip
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -28,14 +29,14 @@ public class TableViewAddDeleteRows extends Application {
     private TableView<Person> table;
 
     /**
-     * Método principal que lanza la aplicación JavaFX.
+     * Metodo principal que lanza la aplicación JavaFX.
      */
     public static void main(String[] args) {
         Application.launch(args);
     }
 
     /**
-     * Método iniciado cuando la aplicación JavaFX empieza.
+     * Metodo iniciado cuando la aplicación JavaFX empieza.
      * Inicializa y configura los elementos de la interfaz de usuario y muestra la ventana principal.
      * @param stage El escenario principal de la aplicación.
      */
@@ -55,9 +56,13 @@ public class TableViewAddDeleteRows extends Application {
         table.getColumns().addAll(PersonTableUtil.getIdColumn(), PersonTableUtil.getFirstNameColumn(), PersonTableUtil.getLastNameColumn(), PersonTableUtil.getBirthDateColumn());
 
         GridPane newDataPane  = this.getNewPersonDataPane();
+
         Button restoreBtn = new Button("Restore Rows");
+        restoreBtn.setTooltip(new Tooltip("Restaura todas las filas eliminadas")); // Tooltip para el botón de restaurar
         restoreBtn.setOnAction(e -> restoreRows());
+
         Button deleteBtn = new Button("Delete Selected Rows");
+        deleteBtn.setTooltip(new Tooltip("Elimina las filas seleccionadas en la tabla")); // Tooltip para el botón de eliminar
         deleteBtn.setOnAction(e -> deleteSelectedRows());
 
         VBox root = new VBox(newDataPane, new HBox(restoreBtn, deleteBtn), table);
@@ -91,6 +96,7 @@ public class TableViewAddDeleteRows extends Application {
         pane.addRow(2, new Label("Fecha Nacimiento:"), dobField);
 
         Button addBtn = new Button("Añadir");
+        addBtn.setTooltip(new Tooltip("Añade una nueva persona a la tabla")); // Tooltip para el botón de añadir
         addBtn.setOnAction(e -> addPerson());
 
         // Añade el botón "Añadir"
